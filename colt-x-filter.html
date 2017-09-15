@@ -1,0 +1,68 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="colt-x-filter">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div>
+        <template is"dom-repeat" items="[[filtersState]]" as="filterItem">
+            <template is="dom-if" if="{{_isTypeMatching(filterItem, 'text')}}">
+							<input
+								type="text" value="{{filterItem.Value::change}}" placeholder="[[filterItem.label]]" data-name="[[filterItem.name]]">
+            </template>
+            <template is="dom-if" if="{{_isTypeMatching(filterItem, 'multi-select')}}">
+							<paper-dropdown-menu id="drpCriteria" no-label-float no-overlap vertical-align="top" horizontal-align="left" on-iron-select="_handleItemSelect" on-iron-deselect="handleItemDeselect">
+								<paper-menu role="menu" id="criteriaMenu" slot="dropdown-content" class="dropdown-content" attr-for-selected="name"  multi>
+										<paper-item name="Destination">
+												<t-checkbox>[[filterItem.label]]</t-checkbox>
+										</paper-item>
+								</paper-menu>                    
+							</paper-dropdown-menu>
+            </template>
+        </template>
+        <div class="layout horizontal center filterApply">
+            <t-button id="applyfilters" label="[[filterButtonLabel]]" class="primary" on-click="_applyFilters" disabled="true"></t-button>
+        </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `colt-x-filter`
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+
+     */
+    class ColtXList extends Polymer.Element {
+      static get is() { return 'colt-x-filter'; }
+      static get properties() {
+        return {
+					
+          filters: {
+            type: Array
+          },
+
+          apiUrl: {
+              type: String
+          },
+
+					filterButtonLabel: {
+						type: String,
+						value: 'String'
+					}
+        };
+      }
+
+      _applyFilters (params) {
+          
+      }
+    }
+
+    window.customElements.define(ColtXList.is, ColtXList);
+  </script>
+</dom-module>

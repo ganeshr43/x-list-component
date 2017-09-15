@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="colt-x-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `colt-x-list`
+     * Core component to handle different listing such as Agent, Agency, Customer etc and its filters
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ColtXList extends Polymer.Element {
+      static get is() { return 'colt-x-list'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'colt-x-list'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(ColtXList.is, ColtXList);
+  </script>
+</dom-module>
