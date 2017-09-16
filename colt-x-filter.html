@@ -10,13 +10,25 @@
     <div>
         <template is"dom-repeat" items="[[filtersState]]" as="filterItem">
             <template is="dom-if" if="{{_isTypeMatching(filterItem, 'text')}}">
-							<input
-								type="text" value="{{filterItem.Value::change}}" placeholder="[[filterItem.label]]" data-name="[[filterItem.name]]">
+							<input type="text"
+                value="{{filterItem.Value::change}}"
+                placeholder="[[filterItem.label]]"
+                data-name="[[filterItem.name]]">
             </template>
             <template is="dom-if" if="{{_isTypeMatching(filterItem, 'multi-select')}}">
-							<paper-dropdown-menu id="drpCriteria" no-label-float no-overlap vertical-align="top" horizontal-align="left" on-iron-select="_handleItemSelect" on-iron-deselect="handleItemDeselect">
-								<paper-menu role="menu" id="criteriaMenu" slot="dropdown-content" class="dropdown-content" attr-for-selected="name"  multi>
-										<paper-item name="Destination">
+							<paper-dropdown-menu
+                no-label-float
+                no-overlap
+                vertical-align="top"
+                horizontal-align="left"
+                on-iron-select="_handleItemSelect"
+                on-iron-deselect="_handleItemDeselect">
+								<paper-menu
+                  role="menu"
+                  slot="dropdown-content"
+                  class="dropdown-content"
+                  attr-for-selected="name"  multi>
+										<paper-item name="[[filterItem.name]]">
 												<t-checkbox>[[filterItem.label]]</t-checkbox>
 										</paper-item>
 								</paper-menu>                    
@@ -24,7 +36,12 @@
             </template>
         </template>
         <div class="layout horizontal center filterApply">
-            <t-button id="applyfilters" label="[[filterButtonLabel]]" class="primary" on-click="_applyFilters" disabled="true"></t-button>
+            <t-button id="applyfilters"
+              label="[[filterButtonLabel]]"
+              class="primary"
+              on-click="_applyFilters"
+              disabled="true">
+            </t-button>
         </div>
     </div>
   </template>
@@ -38,7 +55,7 @@
      * @demo demo/index.html
 
      */
-    class ColtXList extends Polymer.Element {
+    class ColtXFilter extends Polymer.Element {
       static get is() { return 'colt-x-filter'; }
       static get properties() {
         return {
@@ -61,8 +78,16 @@
       _applyFilters (params) {
           
       }
+
+      _handleItemSelect () {
+
+      }
+
+      _handleItemDeselect (argument) {
+        // body...
+      }
     }
 
-    window.customElements.define(ColtXList.is, ColtXList);
+    window.customElements.define(ColtXFilter.is, ColtXFilter);
   </script>
 </dom-module>
