@@ -8,7 +8,7 @@
       }
     </style>
     <div>
-        <template is"dom-repeat" items="[[filtersState]]" as="filterItem">
+        <template is="dom-repeat" items="[[filters]]" as="filterItem">
             <template is="dom-if" if="{{_isTypeMatching(filterItem, 'text')}}">
 							<input type="text"
                 value="{{filterItem.Value::change}}"
@@ -28,9 +28,11 @@
                   slot="dropdown-content"
                   class="dropdown-content"
                   attr-for-selected="name"  multi>
-										<paper-item name="[[filterItem.name]]">
-												<t-checkbox>[[filterItem.label]]</t-checkbox>
-										</paper-item>
+                    <template is="dom-repeat" items="[[filterItem.options]]" as="option">
+  										<paper-item name="[[option.name]]">
+  												<t-checkbox>[[option.label]]</t-checkbox>
+  										</paper-item>
+                    </template>
 								</paper-menu>                    
 							</paper-dropdown-menu>
             </template>
@@ -59,18 +61,27 @@
       static get is() { return 'colt-x-filter'; }
       static get properties() {
         return {
-					
+					/**
+           * [filters description]
+           * @type {Array}
+           * [{
+           *   value: `String` or `Number`
+           *   name: `String`
+           *   label: `String`
+           *   type: `String`
+           * }]
+           */
           filters: {
             type: Array
           },
 
-          apiUrl: {
-              type: String
-          },
-
+          /**
+           * Label of the filter button
+           * @type {String}
+           */
 					filterButtonLabel: {
 						type: String,
-						value: 'String'
+						value: 'Search'
 					}
         };
       }
@@ -85,6 +96,16 @@
 
       _handleItemDeselect (argument) {
         // body...
+      }
+
+      _isTypeMatching (filterItem, type) {
+        if (!filterItem || !filterItem.type || !type) {
+          return false;
+        }
+        if (filterItem.type === type) {
+          return true;
+        }
+        return false;
       }
     }
 
