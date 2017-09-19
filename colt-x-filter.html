@@ -1,71 +1,134 @@
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../paper-menu/paper-menu.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../t-button/t-button.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
 
 <dom-module id="colt-x-filter">
   <template>
-    <style>
-      :host {
+    <style is="custom-style">
+       :host {
         display: block;
+        color: rgba(0, 0, 0, 0.87);
+        font-family: var(--paper-font-common-base, 'Roboto', sans-serif);
+
+        --paper-input-container-underline: {
+          display: none;
+        }
+        ;
+        --paper-input-container-underline-focus: {
+          display: none;
+        }
+        ;
+        --paper-input-container-underline-disabled: {
+          display: none;
+        }
+        ;
+        --paper-button: {
+          background-color: var(--paper-button-bg-color, #32A5FF);
+          font-size: 16px;
+          line-height: 18px;
+          color: #fff;
+          margin: 0;
+        }
+        ;
+        --paper-input-container: {
+          font-size: 16px;
+          line-height: 22px;
+          padding: 7px 16px;
+          border: 1px solid var(--paper-input-container-color, #DFDFDF);
+          color: var(--paper-input-container-input-color, rgba(0, 0, 0, 0.87));
+        }
+        ;
+      }
+
+      .filter-container {
+        @apply --layout-horizontal;
+      }
+
+      .filter-container>* {
+        @apply --layout-flex-auto;
+        margin-left: 17px;
+      }
+
+      .filter-container>*:first-child {
+        margin-left: 0;
+      }
+
+      @media (max-width: 991px) {
+        .filter-container {
+          @apply --layout-wrap;
+        }
+        .filter-container>* {
+          max-width: 32%;
+          min-width: 32%;
+          margin-left: 10px;
+          margin-bottom: 10px;
+        }
+        .filter-container>*:nth-child(4) {
+          margin-left: 0;
+        }
+      }
+
+      @media (max-width: 991px) {
+        .filter-container>* {
+          min-width: 100%;
+          margin-left: 0;
+        }
       }
     </style>
-    <div class="layout horizontal">
-        <template is="dom-repeat" items="[[filters]]" as="filterItem">
-            <template is="dom-if" if="{{_isTypeMatching(filterItem, 'text')}}">
-							<input type="text"
-                value="{{filterItem.Value::change}}"
-                placeholder="[[filterItem.label]]"
-                style$="width: {{filterItem.elementWidth}}px"
-                data-name="[[filterItem.name]]">
-            </template>
-            <template is="dom-if" if="{{_isTypeMatching(filterItem, 'multi-select')}}">
-							<paper-dropdown-menu
-                no-label-float
-                no-overlap
-                vertical-align="top"
-                horizontal-align="left"
-                on-iron-select="_handleItemSelect"
-                on-iron-deselect="_handleItemDeselect">
-								<paper-menu
-                  role="menu"
-                  slot="dropdown-content"
-                  class="dropdown-content"
-                  attr-for-selected="name"  multi>
-                    <template is="dom-repeat" items="[[filterItem.options]]" as="option">
-  										<paper-item name="[[option.name]]">
-  												<t-checkbox>[[option.label]]</t-checkbox>
-  										</paper-item>
-                    </template>
-								</paper-menu>                    
-							</paper-dropdown-menu>
-            </template>
-        </template>
-        <div class="center filterApply">
-            <t-button id="applyfilters"
-              label="[[filterButtonLabel]]"
-              class="primary"
-              on-click="_applyFilters"
-              disabled="true">
-            </t-button>
-        </div>
+    <div class="filter-container">
+      <!--  -->
+      <paper-input no-label-float label="Search by name" data-name="[[filterItem.name]]"></paper-input>
+
+      <!--  -->
+      <paper-input no-label-float label="Search by phone" data-name="[[filterItem.name]]"></paper-input>
+
+      <!--  -->
+      <paper-input no-label-float label="Search by email" data-name="[[filterItem.name]]"></paper-input>
+
+      <!--  -->
+      <paper-input no-label-float label="Search by agency" data-name="[[filterItem.name]]"></paper-input>
+
+      <!--  -->
+      <paper-dropdown-menu no-label-float>
+        <paper-listbox slot="dropdown-content" selected="1">
+          <paper-item>
+              <paper-checkbox checked>item 1</paper-checkbox>
+          </paper-item>
+          <paper-item>
+              <paper-checkbox checked>brontosaurus</paper-checkbox>
+            </paper-item>
+          <paper-item>
+              <paper-checkbox checked>carcharodontosaurus</paper-checkbox>
+            </paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+
+      <!--  -->
+      <paper-button>search</paper-button>
     </div>
   </template>
 
   <script>
     /**
-     * `colt-x-filter`
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
+                     * `colt-x-filter`
+                     *
+                     * @customElement
+                     * @polymer
+                     * @demo demo/index.html
 
-     */
+                     */
     class ColtXFilter extends Polymer.Element {
-      static get is() { return 'colt-x-filter'; }
+      static get is() {
+        return 'colt-x-filter';
+      }
       static get properties() {
         return {
-					/**
+          /**
            * [filters description]
            * @type {Array}
            * [{
@@ -83,26 +146,26 @@
            * Label of the filter button
            * @type {String}
            */
-					filterButtonLabel: {
-						type: String,
-						value: 'Search'
-					}
+          filterButtonLabel: {
+            type: String,
+            value: 'Search'
+          }
         };
       }
 
-      _applyFilters (params) {
-          
-      }
-
-      _handleItemSelect () {
+      _applyFilters(params) {
 
       }
 
-      _handleItemDeselect (argument) {
+      _handleItemSelect() {
+
+      }
+
+      _handleItemDeselect(argument) {
         // body...
       }
 
-      _isTypeMatching (filterItem, type) {
+      _isTypeMatching(filterItem, type) {
         if (!filterItem || !filterItem.type || !type) {
           return false;
         }
