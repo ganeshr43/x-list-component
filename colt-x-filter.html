@@ -10,12 +10,13 @@
         display: block;
       }
     </style>
-    <div>
+    <div class="layout horizontal">
         <template is="dom-repeat" items="[[filters]]" as="filterItem">
             <template is="dom-if" if="{{_isTypeMatching(filterItem, 'text')}}">
 							<input type="text"
                 value="{{filterItem.Value::change}}"
                 placeholder="[[filterItem.label]]"
+                style$="width: {{filterItem.elementWidth}}px"
                 data-name="[[filterItem.name]]">
             </template>
             <template is="dom-if" if="{{_isTypeMatching(filterItem, 'multi-select')}}">
@@ -40,7 +41,7 @@
 							</paper-dropdown-menu>
             </template>
         </template>
-        <div class="layout horizontal center filterApply">
+        <div class="center filterApply">
             <t-button id="applyfilters"
               label="[[filterButtonLabel]]"
               class="primary"
