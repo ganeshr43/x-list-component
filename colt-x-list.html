@@ -28,7 +28,50 @@
       static get properties() {
         return {
           filters: {
-            type: Object
+            type: Object,
+            value: [
+              {
+                "options": null, 
+                "type": "text", 
+                "name": "agency", 
+                "value": null, 
+                "label": "Agent Name"
+              }, 
+              {
+                "options": [
+                  {
+                    "name": "flight", 
+                    "label": "Flight"
+                  }, 
+                  {
+                    "name": "car", 
+                    "label": "Car"
+                  }, 
+                  {
+                    "name": "hotel", 
+                    "label": "Hotel"
+                  }
+                ], 
+                "type": "multi-select", 
+                "name": "agency", 
+                "value": null, 
+                "label": "Customer Name"
+              }, 
+              {
+                "options": null, 
+                "type": "text", 
+                "name": "agency", 
+                "value": null, 
+                "label": "Agency"
+              }, 
+              {
+                "options": null, 
+                "type": "text", 
+                "name": "agency", 
+                "value": null, 
+                "label": "Agency"
+              }
+            ]
           },
 
           /**
