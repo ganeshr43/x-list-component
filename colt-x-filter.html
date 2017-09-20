@@ -81,47 +81,53 @@
       }
     </style>
     <div class="filter-container">
-      <!--  -->
-      <paper-input no-label-float label="Search by name" data-name="[[filterItem.name]]"></paper-input>
+      <template is="dom-repeat" items="[[filters]]" as="filterItem">
+        <template is="dom-if" if="{{_isTypeMatching(filterItem, 'text')}}">
+          <paper-input
+            no-label-float
+            value="{{filterItem.value::change}}"
+            style$="width: {{filterItem.elementWidth}}px"
+            label="[[filterItem.label]]"
+            data-name="[[filterItem.name]]">
+          </paper-input>
+        </template>
+        <template is="dom-if"
+          if="{{_isTypeMatching(filterItem, 'multi-select')}}">
+          <paper-dropdown-menu 
+            no-label-float
+            on-iron-select="_handleItemSelect"
+            on-iron-deselect="_handleItemDeselect">
+            <paper-listbox
+              slot="dropdown-content"
+              selected="[[filterItem.default]]">
+              <template is="dom-repeat"
+                items="[[filterItem.options]]" as="option">
+                <paper-item name="[[option.name]]">
+                  <paper-checkbox>[[option.label]]</paper-checkbox>
+                </paper-item>
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
+        </template>
+      </template>
 
-      <!--  -->
-      <paper-input no-label-float label="Search by phone" data-name="[[filterItem.name]]"></paper-input>
-
-      <!--  -->
-      <paper-input no-label-float label="Search by email" data-name="[[filterItem.name]]"></paper-input>
-
-      <!--  -->
-      <paper-input no-label-float label="Search by agency" data-name="[[filterItem.name]]"></paper-input>
-
-      <!--  -->
-      <paper-dropdown-menu no-label-float>
-        <paper-listbox slot="dropdown-content" selected="1">
-          <paper-item>
-              <paper-checkbox checked>item 1</paper-checkbox>
-          </paper-item>
-          <paper-item>
-              <paper-checkbox checked>brontosaurus</paper-checkbox>
-            </paper-item>
-          <paper-item>
-              <paper-checkbox checked>carcharodontosaurus</paper-checkbox>
-            </paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
-
-      <!--  -->
-      <paper-button>search</paper-button>
+      <paper-button raised
+        on-click="_applyFilters"
+        disabled="[[disableFilterButton]]">
+        [[filterButtonLabel]]
+      </paper-button>
     </div>
   </template>
 
   <script>
     /**
-                     * `colt-x-filter`
-                     *
-                     * @customElement
-                     * @polymer
-                     * @demo demo/index.html
+     * `colt-x-filter`
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
 
-                     */
+     */
     class ColtXFilter extends Polymer.Element {
       static get is() {
         return 'colt-x-filter';
@@ -149,6 +155,15 @@
           filterButtonLabel: {
             type: String,
             value: 'Search'
+          },
+
+          /**
+           * Make it true when button to be disabled
+           * @type {Boolean}
+           */
+          disableFilterButton: {
+            type: Boolean,
+            value: false
           }
         };
       }
